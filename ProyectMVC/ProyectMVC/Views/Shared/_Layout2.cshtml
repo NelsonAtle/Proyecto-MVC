@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+</head>
+<body style="display:flex;">
+
+    
+    <nav style="z-index:1000;">
+        <div class="nav-wrapper grey darken-4">
+            <a href="#!" class="brand-logo center" style="height:100%;"><img src="https://i0.wp.com/mydevgeek.com/wp-content/uploads/2017/02/spring-boot-project-logo.png?resize=300%2C300" style="height:100%" /></a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="#modal2" class="modal-trigger waves-effect waves-light">Iniciar</a></li>
+                <li><a href="#modal1" class="modal-trigger waves-effect waves-light">Registrarse</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href="#modal2" class="modal-trigger waves-effect waves-light">Iniciar</a></li>
+                <li><a href="#modal1" class="modal-trigger waves-effect waves-light">Registrarse</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    @RenderBody()
+    @RenderSection("Scripts", required: false)
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script>
+        $(".button-collapse").sideNav();
+        $(document).ready(function () {
+            $('.slider').slider();
+        });
+         $(document).ready(function(){
+            $('.modal').modal();
+        });
+         $(document).ready(function () {
+             $('select').material_select();
+         });
+    </script>
+</body>
+</html>
