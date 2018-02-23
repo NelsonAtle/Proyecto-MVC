@@ -1,6 +1,24 @@
 ﻿@{
     Layout = "_Layout2";
 }
+@if (ViewBag.registro == false)
+{
+    <script>
+        alert("El usuario ya existe");
+        window.location = window.location.origin;
+    </script>
+
+}
+
+@if (ViewBag.login == false)
+{
+    <script>
+        alert("Datos erroneos o Usuarios no existente");
+        window.location = window.location.origin;
+    </script>
+
+}
+    
 <div class="slider fullscreen ">
     <ul class="slides">
         <li>
@@ -35,102 +53,70 @@
 </div>
 
 <div id="modal1" class="modal">
-    <div class="modal-content">
-        <h4 class="center">Registro</h4>
-        <div class="row">
-            <form class="col s12">
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">account_box</i>
-                        <input id="usuario" type="text" class="validate">
-                        <label for="usuario">Usuario</label>
+    <form asp-action="RegistrarUsuario" method="post">
+        <div class="modal-content">
+            <h4 class="center">Registro</h4>
+            <div class="row">
+                <div class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_box</i>
+                            <input id="usuario" type="text" name="avatar" class="validate">
+                            <label for="usuario">Usuario</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">verified_user</i>
+                            <input id="contra" type="password" name="contrasena" class="validate">
+                            <label for="contra">Contraseña</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">business</i>
+                            <input id="nombre" type="text" name="nombre" class="validate">
+                            <label for="nombre">Nombre</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">language</i>
+                            <input id="sitio" type="text" name="correo" class="validate">
+                            <label for="sitio">Correo Electronico</label>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">verified_user</i>
-                        <input id="contra" type="password" class="validate">
-                        <label for="contra">Contraseña</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">business</i>
-                        <input id="nombre" type="text" class="validate">
-                        <label for="nombre">Nombre Empresa</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">fingerprint</i>
-                        <input id="cedula_juri" type="text" class="validate">
-                        <label for="cedula_juri">Cédula Juridica</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">language</i>
-                        <input id="sitio" type="text" class="validate">
-                        <label for="sitio">Sitio Web</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">local_library</i>
-                        <input id="direccion" type="text" class="validate">
-                        <label for="direccion">Dirección Física</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">local_phone</i>
-                        <input id="telefono" type="text" class="validate">
-                        <label for="telefono">Número de Teléfono</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">store</i>
-                        <select>
-                            <option value="" disabled selected>Seleccione un sector</option>
-                            <option value="Educación">Educación</option>
-                            <option value="Industria">Industria</option>
-                            <option value="Agricultura">Agricultura</option>
-                            <option value="Manufactura">Manufactura</option>
-                            <option value="Servicios">Servicios</option>
-                            <option value="Otros">Otros</option>
-                        </select>
-                        <label>Sector</label>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <h4 class="center"><a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Registrar</a></h4>
-    </div>
+        <div class="modal-footer">
+            <h4 class="center"><button type="submit" class="modal-action  modal-close waves-effect waves-green btn-flat">Registrar</button></h4>
+        </div>
+    </form>
 </div>
 <div id="modal2" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4 class="center"><a><img src="https://i0.wp.com/mydevgeek.com/wp-content/uploads/2017/02/spring-boot-project-logo.png?resize=300%2C300" style="height:100px" /></a></h4>
-        <div class="row">
-            <div class="input-field col s12">
-                <i class="material-icons prefix">account_box</i>
-                <input id="user" type="text" class="validate">
-                <label for="user">Usuario</label>
+    <form asp-action="LoginUsuario" method="post">
+        <div class="modal-content">
+            <h4 class="center"><a><img src="https://preview.ibb.co/hdamtx/Imagen1.png" style="height:100px" /></a></h4>
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">account_box</i>
+                    <input id="user" type="text" name="avatar" class="validate">
+                    <label for="user">Usuario</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">verified_user</i>
+                    <input id="contrasena" type="password" name="contrasena" class="validate">
+                    <label for="contrasena">Contraseña</label>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <i class="material-icons prefix">verified_user</i>
-                <input id="contrasena" type="password" class="validate">
-                <label for="contrasena">Contraseña</label>
-            </div>
+        <div class="modal-footer">
+            <h4 class="center"><button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat">Iniciar</button></h4>
         </div>
-    </div>
-    <div class="modal-footer">
-        <h4 class="center"><a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Iniciar</a></h4>
-    </div>
+    </form>
 </div>
 
 

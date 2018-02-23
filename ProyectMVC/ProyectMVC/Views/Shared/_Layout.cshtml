@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    @using Microsoft.AspNetCore.Http;
+    var nombre = Context.Session.GetString("NOMBRE").ToString();
+    var correo = Context.Session.GetString("CORREO").ToString();
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,32 +11,111 @@
     <title>CRUD</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+        #content {
+            padding: 20px;
+            overflow-y: scroll;
+            background-image: url(https://k41.kn3.net/FC44095CB.png);
+            background-size: cover;
+            margin-left: 300px;
+            overflow-y: hidden;
+        }
+
+        #menu_cliente {
+            margin-left: 300px;
+        }
+
+        @@media only screen and (max-width : 992px) {
+            #content {
+                margin-left: 0;
+            }
+
+            #menu_cliente {
+                margin-left: 0;
+            }
+        }
+
+        .tabs .tab {
+            display: block;
+            text-align: left;
+        }
+
+            .tabs .tab a {
+                color: black;
+            }
+
+                .tabs .tab a:hover, .tabs .tab a.active {
+                    background-color: transparent;
+                    color: dodgerblue;
+                }
+
+        #slide-out {
+            border: none;
+        }
+
+        .side-nav li > form {
+            color: rgba(0,0,0,0.87);
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            height: 47px;
+            line-height: 48px;
+            padding: 0 32px;
+        }
+
+        .side-nav li button {
+            border: none;
+            background: none;
+            color: red;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
 
-    <nav>
-        <div class="nav-wrapper grey darken-4">
-            <a href="#!" class="brand-logo center"><img src="https://i0.wp.com/mydevgeek.com/wp-content/uploads/2017/02/spring-boot-project-logo.png?resize=300%2C300" style="height:63px" /></a>
-            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="sass.html">Salir</a></li>
-            </ul>
-            <ul class="side-nav" id="mobile-demo">
-                <li><a href="sass.html">Salir</a></li>
-            </ul>
+    <nav style="overflow:hidden;">
+        <div class="nav-wrapper" style="background-color:#191b1b;">
+            <a href="#!" class="brand-logo center" style="height:100%;"><img src="https://cdn.dribbble.com/users/781886/screenshots/2007606/logo_animation.gif" style="height:350%; margin-top:-24%;" /></a>
+            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+
         </div>
     </nav>
+    <ul id="slide-out" class="side-nav fixed collapsible tabs" style="position:absolute;top:auto;" data-collapsible="accordion">
+        <li>
+            <div class="user-view" style="padding:32px;">
+                <div class="background">
+                    <img src="http://www.desktopimages.org/pictures/2012/1207/1/cities-cityscapes-people-mood-alone-scenic-architecture-buildings-night-lights-photography-wallpaper-222982.jpg" style="background-size:cover; width:100%;">
+                </div>
 
+                <h5><span class="white-text">@nombre</span></h5>
+                <h6><span class="white-text email">hhh</span></h6>
+            </div>
+        </li>
+        <li class="tab"><a href="#clientes_div"><i class="material-icons">account_box</i>Clientes</a></li>
+        <li class="tab"><a href="#contactos_div"><i class="material-icons">account_box</i>Contactos</a></li>
+        <li class="tab"><a href="#reuniones_div"><i class="material-icons">people</i>Reuniones</a></li>
+        <li class=""><a href=""><i class="material-icons">style</i>Support Tickets</a></li>
+        <li class=""><a href=""><i class="material-icons">error</i>Configuración</a></li>
+        <li class=""><form asp-action="Salir" method="post"><button type="submit" ><i class="material-icons">directions_run</i>Salir</button></form></li>
+    </ul>
+    
 
-
+    @RenderBody()
+    @RenderSection("Scripts", required: false)
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script>
         $(".button-collapse").sideNav();
         $(document).ready(function () {
             $('.slider').slider();
         });
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+        $(document).ready(function () {
+            $('select').material_select();
+        });
     </script>
-    @RenderBody()
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

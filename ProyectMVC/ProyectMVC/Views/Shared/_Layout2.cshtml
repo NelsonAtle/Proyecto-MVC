@@ -6,14 +6,14 @@
     <title>CRUD</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body style="display:flex;">
 
     
-    <nav style="z-index:1000;">
-        <div class="nav-wrapper grey darken-4">
-            <a href="#!" class="brand-logo center" style="height:100%;"><img src="https://i0.wp.com/mydevgeek.com/wp-content/uploads/2017/02/spring-boot-project-logo.png?resize=300%2C300" style="height:100%" /></a>
+    <nav style="z-index:1000; overflow:hidden;">
+        <div class="nav-wrapper" style="background-color:#191b1b;">
+            <a href="#!" class="brand-logo center" style="height:100%;"><img src="https://cdn.dribbble.com/users/781886/screenshots/2007606/logo_animation.gif" style="height:350%; margin-top:-24%;" /></a>
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="#modal2" class="modal-trigger waves-effect waves-light">Iniciar</a></li>
@@ -28,7 +28,7 @@
 
     @RenderBody()
     @RenderSection("Scripts", required: false)
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script>
         $(".button-collapse").sideNav();
@@ -41,6 +41,7 @@
          $(document).ready(function () {
              $('select').material_select();
          });
+        
     </script>
 </body>
 </html>

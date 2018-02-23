@@ -1,0 +1,724 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    @using Microsoft.AspNetCore.Http;
+    @using ProyectMVC.Entidades;
+    @using System.Collections.Generic;
+
+    IList<Ent_Cliente> lista = ViewData["listaClientes"] as IList<Ent_Cliente>;
+}
+<div id="content" style=" height: 109vh; padding: 0;">
+
+    <div id="clientes_div" style="overflow-y: scroll; height: 100%; overflow:hidden;">
+        <ul class="collection with-header" style="width: 95%; margin: auto; margin-top: 25px;">
+            <li class="collection-header" style="padding-left: 15px; background-color: #1e1e1e; border-bottom: 0;"><h4 style="color: dodgerblue; text-align: center; ">Lista de Clientes</h4></li>
+            <li class="collection-item">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Cédula Jurídica</th>
+                            <th>Sitio Web</th>
+                            <th>Dirección</th>
+                            <th>Teléfono</th>
+                            <th>Sector</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var cliente in ViewData["listaClientes"] as IList<Ent_Cliente>)
+                        {
+                            
+                            <tr>
+                                <td>@cliente.Nombre</td>
+                                <td>@cliente.Cedula</td>
+                                <td>@cliente.Sitio</td>
+                                <td>@cliente.Direccion</td>
+                                <td>@cliente.Numero</td>
+                                <td>@cliente.Sector</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </li>
+
+        </ul>
+        <div class="fixed-action-btn toolbar">
+            <a class="btn-floating btn-large red">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+            <ul id="menu_cliente">
+                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_reg_cliente"><i class="material-icons">add</i></a></li>
+                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_act_cliente"><i class="material-icons">autorenew</i></a></li>
+                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_del_cliente"><i class="material-icons">clear</i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="contactos_div" style="overflow-y: scroll; height: 100%; overflow:hidden;">
+        <ul class="collection with-header" style="width: 95%; margin: auto; margin-top: 25px;">
+            <li class="collection-header" style="padding-left: 15px; background-color: #1e1e1e; border-bottom: 0;"><h4 style="color: dodgerblue; text-align: center; ">Lista de Contactos</h4></li>
+            <li class="collection-item">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Item Name</th>
+                            <th>Item Price</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Alvin</td>
+                            <td>Eclair</td>
+                            <td>$0.87</td>
+                        </tr>
+                        <tr>
+                            <td>Alan</td>
+                            <td>Jellybean</td>
+                            <td>$3.76</td>
+                        </tr>
+                        <tr>
+                            <td>Jonathan</td>
+                            <td>Lollipop</td>
+                            <td>$7.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </li>
+
+        </ul>
+        <div class="fixed-action-btn toolbar">
+            <a class="btn-floating btn-large red">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+            <ul id="menu_cliente">
+                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_reg_contacto"><i class="material-icons">insert_chart</i></a></li>
+                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_act_contacto"><i class="material-icons">format_quote</i></a></li>
+                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_del_contacto"><i class="material-icons">publish</i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="reuniones_div" style="overflow-y: scroll; height: 100%; overflow:hidden;">
+        <ul class="collection with-header" style="width: 95%; margin: auto; margin-top: 25px;">
+            <li class="collection-header" style="padding-left: 15px; background-color: #1e1e1e; border-bottom: 0;"><h4 style="color: dodgerblue; text-align: center; ">Lista de Reuniones</h4></li>
+            <li class="collection-item">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Item Name</th>
+                            <th>Item Price</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Alvin</td>
+                            <td>Eclair</td>
+                            <td>$0.87</td>
+                        </tr>
+                        <tr>
+                            <td>Alan</td>
+                            <td>Jellybean</td>
+                            <td>$3.76</td>
+                        </tr>
+                        <tr>
+                            <td>Jonathan</td>
+                            <td>Lollipop</td>
+                            <td>$7.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </li>
+
+        </ul>
+        <div class="fixed-action-btn toolbar">
+            <a class="btn-floating btn-large red">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+            <ul id="menu_cliente">
+                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_reg_reunion"><i class="material-icons">insert_chart</i></a></li>
+                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_act_reunion"><i class="material-icons">format_quote</i></a></li>
+                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_del_reunion"><i class="material-icons">publish</i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="modal_reg_cliente" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+    <form asp-action="RegistrarCliente" method="post">
+        <div class="modal-content">
+            <h4 class="center">Registrar Cliente</h4>
+            <div class="input-field">
+                <i class="material-icons prefix">create</i>
+                <input id="new_name" type="text" name="nombre">
+                <label for="new_name">Nombre Cliente</label>
+            </div>
+            <div class="input-field ">
+                <i class="material-icons prefix">assignment_ind</i>
+                <input id="new_name" type="text" name="cedula_juri">
+                <label for="new_name">Cédula Jurídica</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">link</i>
+                <input id="new_name" type="text" name="sitio">
+                <label for="new_name">Dirección Sitio Web</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">home</i>
+                <input id="new_name" type="text" name="direccion">
+                <label for="new_name">Dirección Física</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">call</i>
+                <input id="new_name" type="text" name="numero">
+                <label for="new_name">Número Teléfono</label>
+            </div>
+            <div class="row">
+                <div class="input-field">
+                    <i class="material-icons prefix">store</i>
+                    <select name="sector">
+                        <option disabled selected>Seleccione un sector</option>
+                        <option value="Educación">Educación</option>
+                        <option value="Industria">Industria</option>
+                        <option value="Agricultura">Agricultura</option>
+                        <option value="Manufactura">Manufactura</option>
+                        <option value="Servicios">Servicios</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                    <label>Sector</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <h4 class="center">
+                <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                    Agregar
+                </button>
+            </h4>
+        </div>
+    </form>
+</div>
+<div id="modal_act_cliente" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+    <form asp-action="ActualizarCliente" method="post">
+        <div class="modal-content">
+            <h4 class="center">Actualizar Cliente</h4>
+            <div class="input-field">
+                <i class="material-icons prefix ">expand_more</i>
+                <select class="icons" id="cliente_act" onchange="getval(this);" name="cliente">
+                    <option value=" " disabled selected>Seleccione un cliente</option>
+                    @foreach (var cliente in ViewData["listaClientes"] as IList<Ent_Cliente>)
+                    {
+                        <option value="@cliente.Id">@cliente.Nombre    /   @cliente.Cedula</option>
+                    }
+                </select>
+                <label>Cliente</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">create</i>
+                <input id="nombre_cliente" type="text" name="nombre">
+                <label for="new_name">Nombre Cliente</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">assignment_ind</i>
+                <input id="cedula_cliente" type="text" name="cedula_juri">
+                <label for="new_name">Cédula Jurídica</label>
+            </div>
+            <div class="input-field col s12 m4">
+                <i class="material-icons prefix">link</i>
+                <input id="sitio_cliente" type="text" name="sitio">
+                <label for="new_name">Dirección Sitio Web</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">home</i>
+                <input id="direccion_cliente" type="text" name="direccion">
+                <label for="new_name">Dirección Física</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">call</i>
+                <input id="numero_cliente" type="text" name="numero">
+                <label for="new_name">Número Teléfono</label>
+            </div>
+            <div class="row">
+                <div class="input-field">
+                    <i class="material-icons prefix">store</i>
+                    <select id="sector_cliente" name="sector">
+                        <option value="" disabled selected>Seleccione un sector</option>
+                        <option value="Educacion">Educación</option>
+                        <option value="Industria">Industria</option>
+                        <option value="Agricultura">Agricultura</option>
+                        <option value="Manufactura">Manufactura</option>
+                        <option value="Servicios">Servicios</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                    <label>Sector</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <h4 class="center">
+                <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                    Actualizar
+                </button>
+            </h4>
+        </div>
+
+        <script>
+
+        function getval(x) {
+             var trew = @Html.Raw(Json.Serialize(lista));
+            for (var i = 0; i < trew.length; i++) {
+                if (x.options[x.selectedIndex].value == trew[i]["id"]) {
+                    document.getElementById("nombre_cliente").value = trew[i]["nombre"];
+                    document.getElementById("cedula_cliente").value = trew[i]["cedula"];
+                    document.getElementById("sitio_cliente").value = trew[i]["sitio"];
+                    document.getElementById("direccion_cliente").value = trew[i]["direccion"];
+                    document.getElementById("numero_cliente").value = trew[i]["numero"];
+                    var select = document.getElementById("sector_cliente");
+                    for (var j = 1; j < select.length; j++) {
+                        var ddd = trew[i]["sector"];
+                        var fff = select.options[j].text;
+                        if (select.options[j].text == trew[i]["sector"]) {
+                            document.ready = document.getElementById("sector_cliente").value = trew[i]["sector"];
+                            fff = select.options[j].value;
+                        }
+                    }
+                }
+            }
+        }
+        </script>
+     </form>
+</div>
+<div id="modal_del_cliente" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+    <form asp-action="EliminarCliente" method="post">
+        <div class="modal-content">
+            <h4 class="center">Eliminar Cliente</h4>
+            <div class="input-field">
+                <i class="material-icons prefix ">expand_more</i>
+                <select class="icons" id="cliente_del" onchange="getval2(this);" name="cliente_del">
+                    <option value=" " disabled selected>Seleccione un cliente</option>
+                    @foreach (var cliente in ViewData["listaClientes"] as IList<Ent_Cliente>)
+                    {
+                        <option value="@cliente.Id">@cliente.Nombre    /   @cliente.Cedula</option>
+                    }
+                </select>
+                <label>Código</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">create</i>
+                <input id="nombre_del" type="text" disabled>
+                <label for="new_name">Nombre Cliente</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">assignment_ind</i>
+                <input id="cedula_del" type="text" disabled>
+                <label for="new_name">Cédula Jurídica</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">link</i>
+                <input id="sitio_del" type="text" disabled>
+                <label for="new_name">Dirección Sitio Web</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">home</i>
+                <input id="direccion_del" type="text" disabled>
+                <label for="new_name">Dirección Física</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">call</i>
+                <input id="numero_del" type="text" disabled>
+                <label for="new_name">Número Teléfono</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">call</i>
+                <input id="sector_del" type="text" disabled>
+                <label for="new_name">Sector</label>
+            </div>
+            <script>
+
+        function getval2(x) {
+             var trew = @Html.Raw(Json.Serialize(lista));
+            for (var i = 0; i < trew.length; i++) {
+                if (x.options[x.selectedIndex].value == trew[i]["id"]) {
+                    document.getElementById("nombre_del").value = trew[i]["nombre"];
+                    document.getElementById("cedula_del").value = trew[i]["cedula"];
+                    document.getElementById("sitio_del").value = trew[i]["sitio"];
+                    document.getElementById("direccion_del").value = trew[i]["direccion"];
+                    document.getElementById("numero_del").value = trew[i]["numero"];
+                    document.getElementById("sector_del").value = trew[i]["sector"];
+                }
+            }
+        }
+            </script>
+        </div>
+        <div class="modal-footer">
+            <h4 class="center">
+                <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                    Eliminar
+                </button>
+            </h4>
+        </div>
+    </form>
+</div>
+
+<div id="modal_reg_contacto" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+    <div class="modal-content" style="overflow-x:hidden">
+        <h4 class="center">Registrar Contacto</h4>
+        <div class="row">
+            <div class="input-field">
+                <i class="material-icons prefix">group</i>
+                <select>
+                    <option value="" disabled selected>Seleccione un cliente</option>
+                    <option value="Educación">Educación</option>
+                    <option value="Industria">Industria</option>
+                    <option value="Agricultura">Agricultura</option>
+                </select>
+                <label>Sector</label>
+            </div>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">create</i>
+            <input id="new_name" type="text">
+            <label for="new_name">Nombre Contacto</label>
+        </div>
+        <div class="input-field ">
+            <i class="material-icons prefix">assignment_ind</i>
+            <input id="new_name" type="text">
+            <label for="new_name">Apellidos</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">link</i>
+            <input id="email" type="email" class="validate">
+            <label for="email">Correo Electrónico</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">call</i>
+            <input id="new_name" type="text">
+            <label for="new_name">Número Teléfono</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">home</i>
+            <input id="new_name" type="text">
+            <label for="new_name">Puesto Laboral</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <h4 class="center">
+            <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                Agregar
+            </button>
+        </h4>
+    </div>
+</div>
+<div id="modal_act_contacto" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+    <div class="modal-content">
+        <h4 class="center">Actualizar Cliente</h4>
+        <div class="input-field">
+            <i class="material-icons prefix ">expand_more</i>
+            <select class="icons">
+                <option value=" " disabled selected>Seleccione un contacto</option>
+                <option value=" ">example 1</option>
+                <option value="">example 2</option>
+                <option value="">example 3</option>
+            </select>
+            <label>Código</label>
+        </div>
+        <div class="row">
+            <div class="input-field">
+                <i class="material-icons prefix">group</i>
+                <select>
+                    <option value="" disabled selected>Seleccione un cliente</option>
+                    <option value="Educación">Educación</option>
+                    <option value="Industria">Industria</option>
+                    <option value="Agricultura">Agricultura</option>
+                </select>
+                <label>Sector</label>
+            </div>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">create</i>
+            <input id="new_name" type="text">
+            <label for="new_name">Nombre Contacto</label>
+        </div>
+        <div class="input-field ">
+            <i class="material-icons prefix">assignment_ind</i>
+            <input id="new_name" type="text">
+            <label for="new_name">Apellidos</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">link</i>
+            <input id="email" type="email" class="validate">
+            <label for="email">Correo Electrónico</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">call</i>
+            <input id="new_name" type="text">
+            <label for="new_name">Número Teléfono</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">home</i>
+            <input id="new_name" type="text">
+            <label for="new_name">Puesto Laboral</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <h4 class="center">
+            <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                Actualizar
+            </button>
+        </h4>
+    </div>
+</div>
+<div id="modal_del_contacto" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+    <div class="modal-content">
+        <h4 class="center">Eliminar Contacto</h4>
+        <div class="input-field">
+            <i class="material-icons prefix ">expand_more</i>
+            <select class="icons">
+                <option value=" " disabled selected>Seleccione un contacto</option>
+                <option value=" ">example 1</option>
+                <option value="">example 2</option>
+                <option value="">example 3</option>
+            </select>
+            <label>Código</label>
+        </div>
+        <div class="row">
+            <div class="input-field">
+                <i class="material-icons prefix">group</i>
+                <select>
+                    <option value="" disabled selected>Seleccione un cliente</option>
+                    <option value="Educación">Educación</option>
+                    <option value="Industria">Industria</option>
+                    <option value="Agricultura">Agricultura</option>
+                </select>
+                <label>Sector</label>
+            </div>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">create</i>
+            <input id="new_name" type="text" disabled>
+            <label for="new_name">Nombre Contacto</label>
+        </div>
+        <div class="input-field ">
+            <i class="material-icons prefix">assignment_ind</i>
+            <input id="new_name" type="text" disabled>
+            <label for="new_name">Apellidos</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">link</i>
+            <input id="email" type="email" class="validate" disabled>
+            <label for="email">Correo Electrónico</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">call</i>
+            <input id="new_name" type="text" disabled>
+            <label for="new_name">Número Teléfono</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">home</i>
+            <input id="new_name" type="text" disabled>
+            <label for="new_name">Puesto Laboral</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <h4 class="center">
+            <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                Eliminar
+            </button>
+        </h4>
+    </div>
+</div>
+
+<div id="modal_reg_reunion" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+    <div class="modal-content" style="overflow-x:hidden">
+        <h4 class="center">Registrar Reunión</h4>
+        <div class="input-field">
+            <i class="material-icons prefix">create</i>
+            <input id="new_name" type="text">
+            <label for="new_name">Nombre de la reunión</label>
+        </div>
+        <div class="input-field ">
+            <i class="material-icons prefix">event</i>
+            <input type="text" class="datepicker">
+            <label for="new_name">Fecha</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">access_alarm</i>
+            <input type="text" class="timepicker">
+            <label for="email">Hora</label>
+        </div>
+        <div class="input-field">
+            <select multiple>
+                <option value="" disabled selected>Seleccione a los usuarios</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+            </select>
+            <label>Materialize Multiple Select</label>
+        </div>
+        <h5>Virtual</h5>
+        <div class="switch">
+            <label>
+                Off
+                <input type="checkbox">
+                <span class="lever"></span>
+                On
+            </label>
+        </div>
+        <div class="row">
+            <div class="input-field">
+                <i class="material-icons prefix">group</i>
+                <select>
+                    <option value="" disabled selected>Seleccione un cliente</option>
+                    <option value="Educación">Educación</option>
+                    <option value="Industria">Industria</option>
+                    <option value="Agricultura">Agricultura</option>
+                </select>
+                <label>Opcional</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <h4 class="center">
+            <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                Agregar
+            </button>
+        </h4>
+    </div>
+</div>
+<div id="modal_act_reunion" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+    <div class="modal-content">
+        <h4 class="center">Actualizar Reunión</h4>
+        <div class="input-field">
+            <i class="material-icons prefix ">expand_more</i>
+            <select class="icons">
+                <option value=" " disabled selected>Seleccione una reunión</option>
+                <option value=" ">example 1</option>
+                <option value="">example 2</option>
+                <option value="">example 3</option>
+            </select>
+            <label>Código</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">create</i>
+            <input id="new_name" type="text">
+            <label for="new_name">Nombre de la reunión</label>
+        </div>
+        <div class="input-field ">
+            <i class="material-icons prefix">event</i>
+            <input type="text" class="datepicker">
+            <label for="new_name">Fecha</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">access_alarm</i>
+            <input type="text" class="timepicker">
+            <label for="email">Hora</label>
+        </div>
+        <div class="input-field">
+            <select multiple>
+                <option value="" disabled selected>Seleccione a los usuarios</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+            </select>
+            <label>Materialize Multiple Select</label>
+        </div>
+        <h5>Virtual</h5>
+        <div class="switch">
+            <label>
+                Off
+                <input type="checkbox">
+                <span class="lever"></span>
+                On
+            </label>
+        </div>
+        <div class="row">
+            <div class="input-field">
+                <i class="material-icons prefix">group</i>
+                <select>
+                    <option value="" disabled selected>Seleccione un cliente</option>
+                    <option value="Educación">Educación</option>
+                    <option value="Industria">Industria</option>
+                    <option value="Agricultura">Agricultura</option>
+                </select>
+                <label>Opcional</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <h4 class="center">
+            <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                Actualizar
+            </button>
+        </h4>
+    </div>
+</div>
+<div id="modal_del_reunion" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+    <div class="modal-content">
+        <h4 class="center">Eliminar Reunión</h4>
+        <div class="input-field">
+            <i class="material-icons prefix ">expand_more</i>
+            <select class="icons">
+                <option value=" " disabled selected>Seleccione una reunión</option>
+                <option value=" ">example 1</option>
+                <option value="">example 2</option>
+                <option value="">example 3</option>
+            </select>
+            <label>Código</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">create</i>
+            <input id="new_name" type="text" disabled>
+            <label for="new_name">Nombre de la reunión</label>
+        </div>
+        <div class="input-field ">
+            <i class="material-icons prefix">event</i>
+            <input type="text" class="datepicker" disabled>
+            <label for="new_name">Fecha</label>
+        </div>
+        <div class="input-field">
+            <i class="material-icons prefix">access_alarm</i>
+            <input type="text" class="timepicker" disabled>
+            <label for="email">Hora</label>
+        </div>
+        <div class="input-field">
+            <select multiple>
+                <option value="" disabled selected>Seleccione a los usuarios</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+            </select>
+            <label>Materialize Multiple Select</label>
+        </div>
+        <h5>Virtual</h5>
+        <div class="switch">
+            <label>
+                Off
+                <input type="checkbox" disabled>
+                <span class="lever"></span>
+                On
+            </label>
+        </div>
+        <div class="row">
+            <div class="input-field">
+                <i class="material-icons prefix">group</i>
+                <select>
+                    <option value="" disabled selected>Seleccione un cliente</option>
+                    <option value="Educación">Educación</option>
+                    <option value="Industria">Industria</option>
+                    <option value="Agricultura">Agricultura</option>
+                </select>
+                <label>Opcional</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <h4 class="center">
+            <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                Eliminar
+            </button>
+        </h4>
+    </div>
+</div>
