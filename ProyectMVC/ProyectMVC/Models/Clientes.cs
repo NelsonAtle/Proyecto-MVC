@@ -14,13 +14,13 @@ namespace ProyectMVC.Models
     public class Clientes
     {
         private IConfiguration configuration;
-        private DataTable schema = null;
+        ///private DataTable schema = null;
         private SqlDataReader dataRead = null;
         public Clientes(IConfiguration configuration)
         {
             this.configuration = configuration;
         }
-        public void agregarCliente(string nombre, string cedula_juri, string sitio, string direccion, int numero, string sector,int id)
+        public void agregarCliente(string nombre, string cedula_juri, string sitio, string direccion, int numero, string sector)
         {
            
             string conex = configuration.GetConnectionString("DefaultConnecctionString");
@@ -28,27 +28,26 @@ namespace ProyectMVC.Models
             connection.Open();
 
            
-            SqlCommand cmd = new SqlCommand("insert into clientes (nombre,ced_juridica,pagina_web,direccion,telefono,sector,id_usuario) values" +
+            SqlCommand cmd = new SqlCommand("insert into clientes (nombre,ced_juridica,pagina_web,direccion,telefono,sector) values" +
                                             " ('" + nombre + "'," +
                                             "'" + cedula_juri + 
                                             "','" + sitio + 
                                             "','" + direccion + 
                                             "','" + numero + 
-                                            "','" + sector +
-                                            "','" + id + "')", connection);
+                                            "','" + sector +"')", connection);
            // dataRead.Close();
             cmd.ExecuteScalar();
             
             connection.Close();
             
         }
-        public IList<Ent_Cliente> cargarClientes(int id)
+        public IList<Ent_Cliente> cargarClientes()
         {
 
             string conex = configuration.GetConnectionString("DefaultConnecctionString");
             SqlConnection connection = new SqlConnection(conex);
             connection.Open();
-            SqlCommand cmd = new SqlCommand("select * from clientes where id_usuario ='" + id + "'", connection);
+            SqlCommand cmd = new SqlCommand("select * from clientes ", connection);
             dataRead = cmd.ExecuteReader();
 
            // schema = dataRead.GetSchemaTable();
@@ -67,7 +66,7 @@ namespace ProyectMVC.Models
             connection.Close();
             return listaCliente;
         }
-        public void actualizarCliente(string nombre, string cedula_juri, string sitio, string direccion, int numero, string sector, int id_user,int cliente_act)
+        public void actualizarCliente(string nombre, string cedula_juri, string sitio, string direccion, int numero, string sector,int cliente_act)
         {
 
             string conex = configuration.GetConnectionString("DefaultConnecctionString");
@@ -80,8 +79,7 @@ namespace ProyectMVC.Models
                                             "pagina_web='"+sitio+"'," +
                                             "direccion='"+direccion+"'," +
                                             "telefono='"+numero+"'," +
-                                            "sector='"+sector+"'," +
-                                            "id_usuario='"+id_user+"' where id='"+cliente_act+"'", connection);
+                                            "sector='"+sector+"' where id='"+cliente_act+"'", connection);
             // dataRead.Close();
             cmd.ExecuteScalar();
 

@@ -17,49 +17,54 @@ namespace ProyectMVC.Controllers
     public class HomeController : Controller
     {
         private readonly IConfiguration configuration;
-
+        private Clientes cl;
+        private Contactos con;
+        private Usuarios us;
+        private IList<Ent_Cliente> listaCli;
+        private IList<Ent_Contacto> listaCon;
+        private IList<Ent_Usuario> listUsers;
+      
         public HomeController(IConfiguration config)
         {
             this.configuration = config;
+            cl = new Clientes(configuration);
+            con = new Contactos(configuration);
+            us = new Usuarios(configuration);
+           
+          
         }
 
         public IActionResult Index()
         {
             return View();
         }
-       
-        public IActionResult RegistrarUsuario(string avatar, string contrasena, string nombre, string correo)
-        {
-            Usuarios us = new Usuarios(configuration);
-            bool banderaRegistro = us.agregarUsuario(avatar,contrasena,nombre,correo);
-            if (banderaRegistro)
-            {
-               ViewBag.registro = true;
-            }
-            else {
-               ViewBag.registro = false;
-            }
 
-            return View("Index");
+        public void cargar()
+        {
+            listaCli = cl.cargarClientes();
+            listaCon = con.cargarContactos();
+            listUsers = us.cargarUsuarios();
         }
 
         public IActionResult LoginUsuario(string avatar, string contrasena)
         {
             Usuarios us = new Usuarios(configuration);
-            Ent_Avatar avatar_user = us.loginUsuario(avatar, contrasena);
-            if (avatar_user.Estado)
+            Ent_Usuario usuario = us.loginUsuario(avatar, contrasena);
+            if (usuario.Estado>0)
             {
 
 
-                HttpContext.Session.SetInt32("ID", int.Parse(avatar_user.Id.ToString()));
-                HttpContext.Session.SetString("AVATAR", avatar_user.Usuario);
-                HttpContext.Session.SetString("PASSWORD", avatar_user.Password);
-                HttpContext.Session.SetString("NOMBRE", avatar_user.Nombre);
-                HttpContext.Session.SetString("CORREO", avatar_user.Correo);
-                int id = int.Parse(HttpContext.Session.GetInt32("ID").ToString());
-                Clientes cl = new Clientes(configuration);
-                IList<Ent_Cliente> lista = cl.cargarClientes(id);
-                ViewData["listaClientes"] = lista;
+                HttpContext.Session.SetInt32("ID", int.Parse(usuario.Id.ToString()));
+                HttpContext.Session.SetString("AVATAR", usuario.Avatar);
+                HttpContext.Session.SetString("PASSWORD", usuario.Password);
+                HttpContext.Session.SetString("NOMBRE", usuario.Nombre);
+                HttpContext.Session.SetString("CORREO", usuario.Correo);
+                HttpContext.Session.SetString("TIPO", usuario.Tipo);
+                cargar();
+                ViewData["listaClientes"] = listaCli;
+                ViewData["listaContactos"] = listaCon;
+                ViewData["listaUsuarios"] = listUsers;
+
                 return View("Principal");
             }
             ViewBag.login = false;
@@ -68,10 +73,12 @@ namespace ProyectMVC.Controllers
 
         public IActionResult Principal()
         {
-            int id = int.Parse(HttpContext.Session.GetInt32("ID").ToString());
-            Clientes cl = new Clientes(configuration);
-            IList<Ent_Cliente> lista = cl.cargarClientes(id);
-            ViewData["listaClientes"] = lista;
+
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+
             return View();
         }
         
@@ -89,35 +96,117 @@ namespace ProyectMVC.Controllers
             return View("Index");
         }
 
-        //Cuentas
+        //Cuentas Usuarios
+        public IActionResult RegistrarUsuario(string avatar, string contrasena, string nombre, string correo)
+        {
+            Usuarios us = new Usuarios(configuration);
+            bool banderaRegistro = us.agregarUsuario(avatar, contrasena, nombre, correo);
+            if (banderaRegistro)
+            {
+                ViewBag.registro = true;
+            }
+            else
+            {
+                ViewBag.registro = false;
+            }
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+
+
+
+            return View("Principal");
+        }
+        public IActionResult ActualizarUsuario(string avatar, string contrasena, string nombre, string correo, int id_user)
+        {
+
+            us.actualizarUsuario(avatar, contrasena, nombre, correo, id_user);
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+            return View("Principal");
+        }
+        public IActionResult EliminarUsuario(int id_user)
+        {
+
+            us.eliminarUsuario(id_user);
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+            return View("Principal");
+        }
+
+        //Cuentas Clientes
         public IActionResult RegistrarCliente(string nombre, string cedula_juri, string sitio, string direccion, int numero, string sector, int usuario)
         {
-            Clientes cl = new Clientes(configuration);
-            int id = int.Parse(HttpContext.Session.GetInt32("ID").ToString());
+           
+            cl.agregarCliente(nombre, cedula_juri, sitio, direccion, numero, sector);
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
 
-            cl.agregarCliente(nombre, cedula_juri, sitio, direccion,numero,sector,id);
-            IList<Ent_Cliente> lista = cl.cargarClientes(id);
-            ViewData["listaClientes"] = lista;
             return View("Principal");
         }
         public IActionResult ActualizarCliente(string nombre, string cedula_juri, string sitio, string direccion, int numero, string sector, int usuario,int cliente)
         {
-            Clientes cl = new Clientes(configuration);
-            int id = int.Parse(HttpContext.Session.GetInt32("ID").ToString());
-
-            cl.actualizarCliente(nombre, cedula_juri, sitio, direccion, numero, sector, id,cliente);
-            IList<Ent_Cliente> lista = cl.cargarClientes(id);
-            ViewData["listaClientes"] = lista;
+           
+            cl.actualizarCliente(nombre, cedula_juri, sitio, direccion, numero, sector,cliente);
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
             return View("Principal");
         }
         public IActionResult EliminarCliente(int cliente_del)
         {
-            Clientes cl = new Clientes(configuration);
+            
             cl.eliminarCliente(cliente_del);
-            int id = int.Parse(HttpContext.Session.GetInt32("ID").ToString());
-            IList<Ent_Cliente> lista = cl.cargarClientes(id);
-            ViewData["listaClientes"] = lista;
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+
             return View("Principal");
         }
+
+        //Cuenta Contactos
+        public IActionResult RegistrarContacto(string nombre, string apellidos, string correo, int numero, string puesto, int id_cliente)
+        {
+            
+            con.agregarContacto(nombre, apellidos, correo, numero, puesto, id_cliente);
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+
+            return View("Principal");
+        }
+        public IActionResult ActualizarContacto(string nombre, string apellidos, string correo, int numero, string puesto, int id_cliente, int id_contacto)
+        {
+           
+            con.actualizarContacto(nombre, apellidos, correo, numero, puesto, id_cliente,id_contacto);
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+
+            return View("Principal");
+        }
+        public IActionResult EliminarContacto(int id_contacto)
+        {
+           
+            con.eliminarContacto(id_contacto);
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+            return View("Principal");
+        }
+
+      
     }
 }

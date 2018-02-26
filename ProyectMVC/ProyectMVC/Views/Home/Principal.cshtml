@@ -3,10 +3,69 @@
     @using Microsoft.AspNetCore.Http;
     @using ProyectMVC.Entidades;
     @using System.Collections.Generic;
-
+    var tipo = Context.Session.GetString("TIPO").ToString();
     IList<Ent_Cliente> lista = ViewData["listaClientes"] as IList<Ent_Cliente>;
+    IList<Ent_Contacto> listaContac = ViewData["listaContactos"] as IList<Ent_Contacto>;
+    IList<Ent_Usuario> listaUsuario = ViewData["listaUsuarios"] as IList<Ent_Usuario>;
 }
 <div id="content" style=" height: 109vh; padding: 0;">
+    @if (tipo == "Admin")
+    {
+        <div id="usuarios_div" style="overflow-y: scroll; height: 100%; overflow:hidden; ">
+            <ul class="collection with-header" style="width: 95%; margin: auto; margin-top: 25px;">
+                <li class="collection-header" style="padding-left: 15px; background-color: #1e1e1e; border-bottom: 0;"><h4 style="color: dodgerblue; text-align: center; ">Lista de Usuarios</h4></li>
+                <li class="collection-item">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Password</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+
+                                <th>Actualizar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var usuario in ViewData["listaUsuarios"] as IList<Ent_Usuario>)
+                            {
+                                if (usuario.Tipo != "Admin")
+                                {
+                                    <tr>
+                                        <td>@usuario.Avatar</td>
+                                        <td>@usuario.Password</td>
+                                        <td>@usuario.Nombre</td>
+                                        <td>@usuario.Correo</td>
+
+                                        <td><a class="waves-effect waves-light btn modal-trigger" href="#modal_act_usuario" onclick="getUser(@usuario.Id)"><i class="material-icons right">autorenew</i>Actualizar</a></td>
+                                        <td>
+                                            <form asp-action="EliminarUsuario" method="post">
+                                                <button type="submit" name="id_user" value="@usuario.Id" class="waves-effect waves-light btn"><i class="material-icons right">clear</i>Eliminar</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+
+
+                        </tbody>
+                    </table>
+                </li>
+
+            </ul>
+            <div class="fixed-action-btn">
+                <a class="btn-floating btn-large red modal-trigger waves-effect" href="#registroUser">
+                    <i class="large material-icons">add</i>
+                </a>
+
+            </div>
+
+        </div>
+    }
 
     <div id="clientes_div" style="overflow-y: scroll; height: 100%; overflow:hidden;">
         <ul class="collection with-header" style="width: 95%; margin: auto; margin-top: 25px;">
@@ -27,7 +86,7 @@
                     <tbody>
                         @foreach (var cliente in ViewData["listaClientes"] as IList<Ent_Cliente>)
                         {
-                            
+
                             <tr>
                                 <td>@cliente.Nombre</td>
                                 <td>@cliente.Cedula</td>
@@ -54,39 +113,56 @@
             </ul>
         </div>
     </div>
-    <div id="contactos_div" style="overflow-y: scroll; height: 100%; overflow:hidden;">
-        <ul class="collection with-header" style="width: 95%; margin: auto; margin-top: 25px;">
-            <li class="collection-header" style="padding-left: 15px; background-color: #1e1e1e; border-bottom: 0;"><h4 style="color: dodgerblue; text-align: center; ">Lista de Contactos</h4></li>
-            <li class="collection-item">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Item Name</th>
-                            <th>Item Price</th>
-                        </tr>
-                    </thead>
+    <div id="contactos_div" style="overflow-y: scroll; height: 100%; overflow:hidden; padding:20px">
+        <ul class="collapsible popout" data-collapsible="accordion">
+            @foreach (var cliente in ViewData["listaClientes"] as IList<Ent_Cliente>)
+            {
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">filter_drama</i>@cliente.Nombre <span style="color:dodgerblue;">[@cliente.Cedula]</span></div>
+                    <div class="collapsible-body">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Correo</th>
+                                    <th>Teléfono</th>
+                                    <th>Puesto</th>
+                                    <th>Actualizar</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                            </thead>
 
-                    <tbody>
-                        <tr>
-                            <td>Alvin</td>
-                            <td>Eclair</td>
-                            <td>$0.87</td>
-                        </tr>
-                        <tr>
-                            <td>Alan</td>
-                            <td>Jellybean</td>
-                            <td>$3.76</td>
-                        </tr>
-                        <tr>
-                            <td>Jonathan</td>
-                            <td>Lollipop</td>
-                            <td>$7.00</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </li>
+                            <tbody>
+                                @if (ViewData["listaContactos"] != null)
+                                {
+                                    @foreach (var contacto in ViewData["listaContactos"] as IList<Ent_Contacto>)
+                                    {
+                                        if (contacto.Id_cliente == cliente.Id)
+                                        {
+                                            <tr>
+                                                <td>@contacto.Nombre</td>
+                                                <td>@contacto.Apellido</td>
+                                                <td>@contacto.Correo</td>
+                                                <td>@contacto.Numero</td>
+                                                <td>@contacto.Puesto</td>
+                                                <td><a class="waves-effect waves-light btn modal-trigger" href="#modal_act_contacto" onclick="getContact(@contacto.Id)"><i class="material-icons right">autorenew</i>Actualizar</a></td>
+                                                <td>
+                                                    <form asp-action="EliminarContacto" method="post">
+                                                        <button type="submit" name="id_contacto" value="@contacto.Id" class="waves-effect waves-light btn"><i class="material-icons right">clear</i>Eliminar</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
 
+
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+            }
         </ul>
         <div class="fixed-action-btn toolbar">
             <a class="btn-floating btn-large red">
@@ -145,6 +221,106 @@
         </div>
     </div>
 </div>
+@if (tipo == "Admin")
+{
+    <div id="registroUser" class="modal">
+        <form asp-action="RegistrarUsuario" method="post">
+            <div class="modal-content">
+                <h4 class="center">Registro</h4>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_box</i>
+                                <input id="usuario" type="text" name="avatar" class="validate">
+                                <label for="usuario">Usuario</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">verified_user</i>
+                                <input id="contra" type="password" name="contrasena" class="validate">
+                                <label for="contra">Contraseña</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">business</i>
+                                <input id="nombre" type="text" name="nombre" class="validate">
+                                <label for="nombre">Nombre</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">language</i>
+                                <input id="sitio" type="text" name="correo" class="validate">
+                                <label for="sitio">Correo Electronico</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <h4 class="center"><button type="submit" class="modal-action  modal-close waves-effect waves-green btn-flat">Registrar</button></h4>
+            </div>
+        </form>
+    </div>
+}
+<!--USUARIO-->
+    <div id="modal_act_usuario" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+        <form asp-action="ActualizarUsuario" method="post">
+            <div class="modal-content" style="overflow-x:hidden">
+                <h4 class="center">Actualizar Usuario</h4>
+                <input type="text" id="id_act_user" name="id_user" value="" style="display:none;" />
+
+                <div class="input-field">
+                    <i class="material-icons prefix">create</i>
+                    <input id="nombre_user_act" type="text" name="nombre">
+                    <label for="nombre_user_act">Nombre</label>
+                </div>
+                <div class="input-field ">
+                    <i class="material-icons prefix">assignment_ind</i>
+                    <input id="avatar_user_act" type="text" name="avatar">
+                    <label for="avatar_user_act">Avatar</label>
+                </div>
+
+                <div class="input-field">
+                    <i class="material-icons prefix">call</i>
+                    <input id="contra_user_act" type="text" name="contrasena">
+                    <label for="contra_user_act">Password</label>
+                </div>
+                <div class="input-field">
+                    <i class="material-icons prefix">link</i>
+                    <input id="email_user_act" type="email" class="validate" name="correo">
+                    <label for="email_user_act">Correo Electrónico</label>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <h4 class="center">
+                    <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                        Actualizar
+                    </button>
+                </h4>
+            </div>
+            <script>
+                function getUser(id) {
+             var trew = @Html.Raw(Json.Serialize(listaUsuario));
+            for (var i = 0; i < trew.length; i++) {
+                if (id == trew[i]["id"]) {
+                    document.getElementById("id_act_user").value = id;
+                    document.getElementById("nombre_user_act").value = trew[i]["nombre"];
+                    document.getElementById("avatar_user_act").value = trew[i]["avatar"];
+                    document.getElementById("email_user_act").value = trew[i]["correo"];
+                    document.getElementById("contra_user_act").value = trew[i]["password"];
+                   
+                }
+            }
+        }
+            </script>
+        </form>
+    </div>
+<!--Cliente-->
 <div id="modal_reg_cliente" class="modal modal-fixed-footer" style="overflow-y:hidden;">
     <form asp-action="RegistrarCliente" method="post">
         <div class="modal-content">
@@ -280,6 +456,7 @@
                     for (var j = 1; j < select.length; j++) {
                         var ddd = trew[i]["sector"];
                         var fff = select.options[j].text;
+
                         if (select.options[j].text == trew[i]["sector"]) {
                             document.ready = document.getElementById("sector_cliente").value = trew[i]["sector"];
                             fff = select.options[j].value;
@@ -289,7 +466,7 @@
             }
         }
         </script>
-     </form>
+    </form>
 </div>
 <div id="modal_del_cliente" class="modal modal-fixed-footer" style="overflow-y:hidden;">
     <form asp-action="EliminarCliente" method="post">
@@ -362,175 +539,133 @@
         </div>
     </form>
 </div>
-
+<!--Contacto-->
 <div id="modal_reg_contacto" class="modal modal-fixed-footer" style="overflow-y:hidden;">
-    <div class="modal-content" style="overflow-x:hidden">
-        <h4 class="center">Registrar Contacto</h4>
-        <div class="row">
+    <form asp-action="RegistrarContacto" method="post">
+        <div class="modal-content" style="overflow-x:hidden">
+            <h4 class="center">Registrar Contacto</h4>
             <div class="input-field">
-                <i class="material-icons prefix">group</i>
-                <select>
-                    <option value="" disabled selected>Seleccione un cliente</option>
-                    <option value="Educación">Educación</option>
-                    <option value="Industria">Industria</option>
-                    <option value="Agricultura">Agricultura</option>
+                <i class="material-icons prefix ">expand_more</i>
+                <select class="icons" id="cliente_act" onchange="getval(this);" name="id_cliente">
+                    <option value=" " disabled selected>Seleccione un cliente</option>
+                    @foreach (var cliente in ViewData["listaClientes"] as IList<Ent_Cliente>)
+                    {
+                        <option value="@cliente.Id">@cliente.Nombre    /   @cliente.Cedula</option>
+                    }
                 </select>
-                <label>Sector</label>
+                <label>Cliente</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">create</i>
+                <input id="new_name" type="text" name="nombre">
+                <label for="new_name">Nombre Contacto</label>
+            </div>
+            <div class="input-field ">
+                <i class="material-icons prefix">assignment_ind</i>
+                <input id="new_name" type="text" name="apellidos">
+                <label for="new_name">Apellidos</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">link</i>
+                <input id="email" type="email" class="validate" name="correo">
+                <label for="email">Correo Electrónico</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">call</i>
+                <input id="new_name" type="text" name="numero">
+                <label for="new_name">Número Teléfono</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">home</i>
+                <input id="new_name" type="text" name="puesto">
+                <label for="new_name">Puesto Laboral</label>
             </div>
         </div>
-        <div class="input-field">
-            <i class="material-icons prefix">create</i>
-            <input id="new_name" type="text">
-            <label for="new_name">Nombre Contacto</label>
+        <div class="modal-footer">
+            <h4 class="center">
+                <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                    Agregar
+                </button>
+            </h4>
         </div>
-        <div class="input-field ">
-            <i class="material-icons prefix">assignment_ind</i>
-            <input id="new_name" type="text">
-            <label for="new_name">Apellidos</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">link</i>
-            <input id="email" type="email" class="validate">
-            <label for="email">Correo Electrónico</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">call</i>
-            <input id="new_name" type="text">
-            <label for="new_name">Número Teléfono</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">home</i>
-            <input id="new_name" type="text">
-            <label for="new_name">Puesto Laboral</label>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <h4 class="center">
-            <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
-                Agregar
-            </button>
-        </h4>
-    </div>
+    </form>
 </div>
 <div id="modal_act_contacto" class="modal modal-fixed-footer" style="overflow-y:hidden;">
-    <div class="modal-content">
-        <h4 class="center">Actualizar Cliente</h4>
-        <div class="input-field">
-            <i class="material-icons prefix ">expand_more</i>
-            <select class="icons">
-                <option value=" " disabled selected>Seleccione un contacto</option>
-                <option value=" ">example 1</option>
-                <option value="">example 2</option>
-                <option value="">example 3</option>
-            </select>
-            <label>Código</label>
-        </div>
-        <div class="row">
+    <form asp-action="ActualizarContacto" method="post">
+        <div class="modal-content" style="overflow-x:hidden">
+            <h4 class="center">Actualizar Contacto</h4>
+            <input type="text" id="id_act_contac" name="id_contacto" value="" style="display:none;" />
             <div class="input-field">
-                <i class="material-icons prefix">group</i>
-                <select>
-                    <option value="" disabled selected>Seleccione un cliente</option>
-                    <option value="Educación">Educación</option>
-                    <option value="Industria">Industria</option>
-                    <option value="Agricultura">Agricultura</option>
+                <i class="material-icons prefix ">expand_more</i>
+                <select class="icons" id="cliente_contacto" name="id_cliente">
+                    <option value=" " disabled selected>Seleccione un cliente</option>
+                    @foreach (var cliente in ViewData["listaClientes"] as IList<Ent_Cliente>)
+                    {
+                        <option value="@cliente.Id">@cliente.Nombre    /   @cliente.Cedula</option>
+                    }
                 </select>
-                <label>Sector</label>
+                <label>Cliente</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">create</i>
+                <input id="nombre_contacto_act" type="text" name="nombre">
+                <label for="nombre_contacto_act">Nombre Contacto</label>
+            </div>
+            <div class="input-field ">
+                <i class="material-icons prefix">assignment_ind</i>
+                <input id="apellidos_contacto_act" type="text" name="apellidos">
+                <label for="apelidos_contacto_act">Apellidos</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">link</i>
+                <input id="email_contacto_act" type="email" class="validate" name="correo">
+                <label for="email_contacto_act">Correo Electrónico</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">call</i>
+                <input id="numero_contacto_act" type="text" name="numero">
+                <label for="numero_contacto_act">Número Teléfono</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix">home</i>
+                <input id="puesto_contacto_act" type="text" name="puesto">
+                <label for="puesto_contacto_act">Puesto Laboral</label>
             </div>
         </div>
-        <div class="input-field">
-            <i class="material-icons prefix">create</i>
-            <input id="new_name" type="text">
-            <label for="new_name">Nombre Contacto</label>
+        <div class="modal-footer">
+            <h4 class="center">
+                <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                    Actualizar
+                </button>
+            </h4>
         </div>
-        <div class="input-field ">
-            <i class="material-icons prefix">assignment_ind</i>
-            <input id="new_name" type="text">
-            <label for="new_name">Apellidos</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">link</i>
-            <input id="email" type="email" class="validate">
-            <label for="email">Correo Electrónico</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">call</i>
-            <input id="new_name" type="text">
-            <label for="new_name">Número Teléfono</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">home</i>
-            <input id="new_name" type="text">
-            <label for="new_name">Puesto Laboral</label>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <h4 class="center">
-            <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
-                Actualizar
-            </button>
-        </h4>
-    </div>
-</div>
-<div id="modal_del_contacto" class="modal modal-fixed-footer" style="overflow-y:hidden;">
-    <div class="modal-content">
-        <h4 class="center">Eliminar Contacto</h4>
-        <div class="input-field">
-            <i class="material-icons prefix ">expand_more</i>
-            <select class="icons">
-                <option value=" " disabled selected>Seleccione un contacto</option>
-                <option value=" ">example 1</option>
-                <option value="">example 2</option>
-                <option value="">example 3</option>
-            </select>
-            <label>Código</label>
-        </div>
-        <div class="row">
-            <div class="input-field">
-                <i class="material-icons prefix">group</i>
-                <select>
-                    <option value="" disabled selected>Seleccione un cliente</option>
-                    <option value="Educación">Educación</option>
-                    <option value="Industria">Industria</option>
-                    <option value="Agricultura">Agricultura</option>
-                </select>
-                <label>Sector</label>
-            </div>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">create</i>
-            <input id="new_name" type="text" disabled>
-            <label for="new_name">Nombre Contacto</label>
-        </div>
-        <div class="input-field ">
-            <i class="material-icons prefix">assignment_ind</i>
-            <input id="new_name" type="text" disabled>
-            <label for="new_name">Apellidos</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">link</i>
-            <input id="email" type="email" class="validate" disabled>
-            <label for="email">Correo Electrónico</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">call</i>
-            <input id="new_name" type="text" disabled>
-            <label for="new_name">Número Teléfono</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">home</i>
-            <input id="new_name" type="text" disabled>
-            <label for="new_name">Puesto Laboral</label>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <h4 class="center">
-            <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
-                Eliminar
-            </button>
-        </h4>
-    </div>
-</div>
+        <script>
 
+            function getContact(id) {
+            //modal_act_contacto
+             var trew = @Html.Raw(Json.Serialize(listaContac));
+            for (var i = 0; i < trew.length; i++) {
+                if (id == trew[i]["id"]) {
+                    document.getElementById("id_act_contac").value = id;
+                    document.getElementById("nombre_contacto_act").value = trew[i]["nombre"];
+                    document.getElementById("apellidos_contacto_act").value = trew[i]["apellido"];
+                    document.getElementById("email_contacto_act").value = trew[i]["correo"];
+                    document.getElementById("numero_contacto_act").value = trew[i]["numero"];
+                    document.getElementById("puesto_contacto_act").value = trew[i]["puesto"];
+                    var select = document.getElementById("cliente_contacto");
+                    document.ready = document.getElementById("cliente_contacto").value = trew[i]["id_cliente"];
+                    for (var j = 1; j < select.length; j++) {
+                        if (select.options[j].text == trew[i]["id_cliente"]) {
+                            document.ready = document.getElementById("cliente_contacto").value = trew[i]["id_cliente"];
+                        }
+                    }
+                }
+            }
+        }
+        </script>
+    </form>
+</div>
+<!--Reunion-->
 <div id="modal_reg_reunion" class="modal modal-fixed-footer" style="overflow-y:hidden;">
     <div class="modal-content" style="overflow-x:hidden">
         <h4 class="center">Registrar Reunión</h4>
