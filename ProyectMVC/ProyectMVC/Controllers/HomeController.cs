@@ -21,10 +21,12 @@ namespace ProyectMVC.Controllers
         private Contactos con;
         private Usuarios us;
         private Reuniones rn;
+        private Tikects tk;
         private IList<Ent_Cliente> listaCli;
         private IList<Ent_Contacto> listaCon;
         private IList<Ent_Usuario> listUsers;
         private IList<Ent_Reunion> listReuniones;
+        private IList<Ent_Tikects> listTiketes;
 
         public HomeController(IConfiguration config)
         {
@@ -33,7 +35,7 @@ namespace ProyectMVC.Controllers
             con = new Contactos(configuration);
             us = new Usuarios(configuration);
             rn = new Reuniones(configuration);
-          
+            tk = new Tikects(configuration);
         }
 
         public IActionResult Index()
@@ -47,6 +49,7 @@ namespace ProyectMVC.Controllers
             listaCon = con.cargarContactos();
             listUsers = us.cargarUsuarios();
             listReuniones = rn.cargarReuniones();
+            listTiketes = tk.cargarTiketes();
         }
 
         public IActionResult LoginUsuario(string avatar, string contrasena)
@@ -68,6 +71,7 @@ namespace ProyectMVC.Controllers
                 ViewData["listaContactos"] = listaCon;
                 ViewData["listaUsuarios"] = listUsers;
                 ViewData["listaReuniones"] = listReuniones;
+                ViewData["listaTiketes"] = listTiketes;
                 return View("Principal");
             }
             ViewBag.login = false;
@@ -82,6 +86,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View();
         }
         
@@ -117,7 +122,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
-
+            ViewData["listaTiketes"] = listTiketes;
 
             return View("Principal");
         }
@@ -130,6 +135,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
         public IActionResult EliminarUsuario(int id_user)
@@ -141,6 +147,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
 
@@ -154,6 +161,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
         public IActionResult ActualizarCliente(string nombre, string cedula_juri, string sitio, string direccion, int numero, string sector, int usuario,int cliente)
@@ -165,6 +173,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
         public IActionResult EliminarCliente(int cliente_del)
@@ -176,6 +185,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
 
@@ -189,6 +199,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
         public IActionResult ActualizarContacto(string nombre, string apellidos, string correo, int numero, string puesto, int id_cliente, int id_contacto)
@@ -200,6 +211,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
         public IActionResult EliminarContacto(int id_contacto)
@@ -211,6 +223,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
 
@@ -224,7 +237,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
-
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
         public IActionResult ActualizarReunion(string titulo, DateTime dia, DateTime hora, int[] usuarios, bool linea, int cliente,int id)
@@ -236,6 +249,7 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
         public IActionResult EliminarReunion(int id)
@@ -247,8 +261,35 @@ namespace ProyectMVC.Controllers
             ViewData["listaContactos"] = listaCon;
             ViewData["listaUsuarios"] = listUsers;
             ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
+
+        //Cuenta Tiketes
+        public IActionResult RegistrarTikete(string titulo, string detalle, int id_cliente, string estado)
+        {
+            tk.agregarTikete(titulo,detalle,Convert.ToInt32(HttpContext.Session.GetInt32("ID")),id_cliente,estado);
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+            ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
+            return View("Principal");
+        }
+        public IActionResult ActualizarTikete(string titulo, string detalle, int id_cliente, string estado,int id)
+        {
+
+            tk.actualizarTikete(titulo,detalle, Convert.ToInt32(HttpContext.Session.GetInt32("ID")),id_cliente,estado,id);
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+            ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
+            return View("Principal");
+        }
+
 
     }
 }

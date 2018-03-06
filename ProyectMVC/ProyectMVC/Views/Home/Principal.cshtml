@@ -8,6 +8,7 @@
     IList<Ent_Contacto> listaContac = ViewData["listaContactos"] as IList<Ent_Contacto>;
     IList<Ent_Usuario> listaUsuario = ViewData["listaUsuarios"] as IList<Ent_Usuario>;
     IList<Ent_Reunion> listaReuniones = ViewData["listaReuniones"] as IList<Ent_Reunion>;
+    IList<Ent_Tikects> listaTiketes = ViewData["listaTiketes"] as IList<Ent_Tikects>;
 }
 <div id="content" style=" height: 109vh; padding: 0;">
     @if (tipo == "Admin")
@@ -291,25 +292,49 @@
                     </thead>
                         
                     <tbody>
-                        
-                      <tr>
-                          <td></td>
-                      </tr>
+                        @foreach (var tiketes in ViewData["listaTiketes"] as IList<Ent_Tikects>)
+    {
+                    @foreach (var usuario in ViewData["listaUsuarios"] as IList<Ent_Usuario>)
+{
+                    @if (tiketes.Reportante == usuario.Id)
+{
+                        <tr>
+                            <td>@tiketes.Titulo</td>
+                            <td>@tiketes.Detalle</td>
+                            <td>@usuario.Nombre</td>
+                            @foreach (var cliente in ViewData["listaClientes"] as IList<Ent_Cliente>)
+    {
+                        @if (tiketes.Cliente == cliente.Id)
+{
+                        <td>@cliente.Nombre</td>
+}
+}
+                            <td>@tiketes.Estado</td>
+                            <td>
+                            <a class="waves-effect waves-light btn modal-trigger" href="#modal_act_tiketes" onclick="getTikete(@tiketes.Id)"><i class="material-icons right">autorenew</i>Actualizar</a></td>
+                            <td>
+                                <form asp-action="EliminarTikete" method="post">
+                                    <button type="submit" name="id" value="@tiketes.Id" class="waves-effect waves-light btn"><i class="material-icons right">clear</i>Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+}
+}
+
+
+}
+
 
                     </tbody>
                 </table>
             </li>
 
         </ul>
-        <div class="fixed-action-btn toolbar">
-            <a class="btn-floating btn-large red">
+        <div class="fixed-action-btn ">
+            <a class="btn-floating btn-large red modal-trigger" href="#modal_reg_tiketes">
                 <i class="large material-icons">mode_edit</i>
             </a>
-            <ul id="menu_cliente">
-                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_reg_reunion"><i class="material-icons">insert_chart</i></a></li>
-                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_act_reunion"><i class="material-icons">format_quote</i></a></li>
-                <li class="waves-effect waves-light"><a class="waves-effect waves-light btn modal-trigger" href="#modal_del_reunion"><i class="material-icons">publish</i></a></li>
-            </ul>
+            
         </div>
     </div>
 </div>
@@ -913,76 +938,9 @@
    
     
 </div>
-<div id="modal_del_reunion" class="modal modal-fixed-footer" style="overflow-y:hidden;">
-    <div class="modal-content">
-        <h4 class="center">Eliminar Reunión</h4>
-        <div class="input-field">
-            <i class="material-icons prefix ">expand_more</i>
-            <select class="icons">
-                <option value=" " disabled selected>Seleccione una reunión</option>
-                <option value=" ">example 1</option>
-                <option value="">example 2</option>
-                <option value="">example 3</option>
-            </select>
-            <label>Código</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">create</i>
-            <input id="new_name" type="text" disabled>
-            <label for="new_name">Nombre de la reunión</label>
-        </div>
-        <div class="input-field ">
-            <i class="material-icons prefix">event</i>
-            <input type="text" class="datepicker" disabled>
-            <label for="new_name">Fecha</label>
-        </div>
-        <div class="input-field">
-            <i class="material-icons prefix">access_alarm</i>
-            <input type="text" class="timepicker" disabled>
-            <label for="email">Hora</label>
-        </div>
-        <div class="input-field">
-            <select multiple>
-                <option value="" disabled selected>Seleccione a los usuarios</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
-            </select>
-            <label>Materialize Multiple Select</label>
-        </div>
-        <h5>Virtual</h5>
-        <div class="switch">
-            <label>
-                Off
-                <input type="checkbox" disabled>
-                <span class="lever"></span>
-                On
-            </label>
-        </div>
-        <div class="row">
-            <div class="input-field">
-                <i class="material-icons prefix">group</i>
-                <select>
-                    <option value="" disabled selected>Seleccione un cliente</option>
-                    <option value="Educación">Educación</option>
-                    <option value="Industria">Industria</option>
-                    <option value="Agricultura">Agricultura</option>
-                </select>
-                <label>Opcional</label>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <h4 class="center">
-            <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
-                Eliminar
-            </button>
-        </h4>
-    </div>
-</div>
 
 <div id="modal_reg_tiketes" class="modal modal-fixed-footer" style="overflow-y:hidden;">
-    <form asp-action="RegistrarTikect" method="post">
+    <form asp-action="RegistrarTikete" method="post">
         <div class="modal-content" style="overflow-x:hidden">
             <h4 class="center">Registrar Tikete</h4>
             <div class="input-field">
@@ -1009,8 +967,8 @@
 
            <div class="input-field">
                 <i class="material-icons prefix ">expand_more</i>
-                <select class="icons" id="cliente_act" name="estado">
-                    <option value=" " disabled selected>Seleccione un cliente</option>
+                <select class="icons" id="estado_tk" name="estado">
+                    <option value=" " disabled selected>Seleccione un estado</option>
                     <option value="Abierto">Abierto</option>
                     <option value="Proceso">En Proceso</option>
                     <option value="Espera">En Espera</option>
@@ -1027,4 +985,76 @@
             </h4>
         </div>
     </form>
+</div>
+<div id="modal_act_tiketes" class="modal modal-fixed-footer" style="overflow-y:hidden;">
+
+    <form asp-action="ActualizarTikete" method="post">
+        <div class="modal-content" style="overflow-x:hidden">
+            <input type="text" name="id" value="" id="id_tikete_act" style="display:none;" />
+            <h4 class="center">Actualizar Tikete</h4>
+            <div class="input-field">
+                <i class="material-icons prefix">create</i>
+                <input id="titulo_act_tk" type="text" name="titulo">
+                <label for="titulo_act_tk">Titulo</label>
+            </div>
+            <div class="input-field ">
+                <i class="material-icons prefix">assignment_ind</i>
+                <input id="detalle_act_tk" type="text" name="detalle">
+                <label for="detalle_act_tk">Detalle</label>
+            </div>
+            <div class="input-field">
+                <i class="material-icons prefix ">expand_more</i>
+                <select class="icons" id="cliente_act_tk" name="id_cliente">
+                    <option value=" " disabled selected>Seleccione un cliente</option>
+                    @foreach (var cliente in ViewData["listaClientes"] as IList<Ent_Cliente>)
+            {
+                <option value="@cliente.Id">@cliente.Nombre    /   @cliente.Cedula</option>
+    }
+                </select>
+                <label>Cliente</label>
+            </div>
+
+            <div class="input-field">
+                <i class="material-icons prefix ">expand_more</i>
+                <select class="icons" id="estado_act_tk" name="estado">
+                    <option value=" " disabled selected>Seleccione un estado</option>
+                    <option value="Abierto">Abierto</option>
+                    <option value="Proceso">En Proceso</option>
+                    <option value="Espera">En Espera</option>
+                    <option value="Finalizado">Finalizado</option>
+                </select>
+                <label>Estado</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <h4 class="center">
+                <button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+                    Agregar
+                </button>
+            </h4>
+        </div>
+    </form>
+    <script>
+            function getTikete(id) {
+             var trew = @Html.Raw(Json.Serialize(listaTiketes));
+            for (var i = 0; i < trew.length; i++) {
+                if (id == trew[i]["id"]) {
+                    document.getElementById("id_tikete_act").value = id;
+                    document.getElementById("titulo_act_tk").value = trew[i]["titulo"];
+                    document.getElementById("detalle_act_tk").value = trew[i]["detalle"];
+                    document.getElementById("estado_act_tk").value = trew[i]["estado"];
+
+                    var select = document.getElementById("cliente_act_tk");
+                    document.ready = document.getElementById("cliente_act_tk").value = trew[i]["id_cliente"];
+                    for (var j = 1; j < select.length; j++) {
+                        if (select.options[j].text == trew[i]["id_cliente"]) {
+                            document.ready = document.getElementById("cliente_act_tk").value = trew[i]["id_cliente"];
+                        }
+                    }
+                    
+                }
+                }
+        }
+    </script>
+
 </div>
