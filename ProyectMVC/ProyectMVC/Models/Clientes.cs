@@ -94,7 +94,7 @@ namespace ProyectMVC.Models
             connection.Open();
 
 
-            SqlCommand cmd = new SqlCommand("DELETE FROM clientes where id='"+cliente_del+"'", connection);
+            SqlCommand cmd = new SqlCommand("DELETE FROM clientes where id="+cliente_del, connection);
             
             cmd.ExecuteScalar();
 

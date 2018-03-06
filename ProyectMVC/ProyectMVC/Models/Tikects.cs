@@ -71,7 +71,7 @@ namespace ProyectMVC.Models
                                             "detalle='" + detalle + "'," +
                                             "id_reportante='" + reportante + "'," +
                                             "id_cliente='" + cliente + "'," +
-                                            "estado='" + estado + " where id="+id, connection);
+                                            "estado='" + estado + "' where id="+id, connection);
             
             cmd.ExecuteScalar();
 
@@ -80,7 +80,7 @@ namespace ProyectMVC.Models
             connection.Close();
 
         }
-        public void eliminarTikete(string titulo, string detalle, int reportante, int cliente, string estado, int id)
+        public void eliminarTikete(int id)
         {
             string conex = configuration.GetConnectionString("DefaultConnecctionString");
             SqlConnection connection = new SqlConnection(conex);

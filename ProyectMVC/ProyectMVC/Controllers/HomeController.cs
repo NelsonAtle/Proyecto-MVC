@@ -289,6 +289,18 @@ namespace ProyectMVC.Controllers
             ViewData["listaTiketes"] = listTiketes;
             return View("Principal");
         }
+        public IActionResult EliminarTikete(int id)
+        {
+
+            tk.eliminarTikete( id);
+            cargar();
+            ViewData["listaClientes"] = listaCli;
+            ViewData["listaContactos"] = listaCon;
+            ViewData["listaUsuarios"] = listUsers;
+            ViewData["listaReuniones"] = listReuniones;
+            ViewData["listaTiketes"] = listTiketes;
+            return View("Principal");
+        }
 
 
     }
